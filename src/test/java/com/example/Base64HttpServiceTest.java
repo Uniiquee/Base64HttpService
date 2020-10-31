@@ -49,9 +49,15 @@ public class Base64HttpServiceTest {
     }
 
     @Test
-    void testBase64ENull(){
+    void testBase64Null(){
         String response = post("null");
         assertEquals("bnVsbA==", response);
+    }
+
+    @Test
+    void testBase64SpecialCharacter(){
+        String response = post("!@#$%^&*()`~");
+        assertEquals("IUAjJCVeJiooKWB+", response);
     }
 
     private String post(String content) {
