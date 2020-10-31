@@ -1,6 +1,7 @@
 package com.example;
 
 import io.micronaut.http.HttpRequest;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.runtime.EmbeddedApplication;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.Assertions;
 
 import javax.inject.Inject;
 
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,7 +39,13 @@ public class Base64HttpServiceTest {
     @Test
     void testEcho(){
         String response = client.toBlocking().retrieve(HttpRequest.POST("/echo","test"));
-        assertEquals("test", response); //)
+        assertEquals("test", response);
+    }
+
+    @Test
+    void testBase64(){
+        String response = client.toBlocking().retrieve(HttpRequest.POST("/convertToBase64","test".getBytes(StandardCharsets.UTF_8)).contentType(MediaType.APPLICATION_OCTET_STREAM_TYPE));
+        assertEquals("dGVzdA==", response);
     }
 
 }
