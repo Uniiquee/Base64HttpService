@@ -60,6 +60,12 @@ public class Base64HttpServiceTest {
         assertEquals("IUAjJCVeJiooKWB+", response);
     }
 
+    @Test
+    void testBase64Script(){
+        String response = post("<script>alert(123)</script>");
+        assertEquals("PHNjcmlwdD5hbGVydCgxMjMpPC9zY3JpcHQ+", response);
+    }
+
     private String post(String content) {
         return client.toBlocking().retrieve(HttpRequest.POST("/convertToBase64",content.getBytes(StandardCharsets.UTF_8)).contentType(MediaType.APPLICATION_OCTET_STREAM_TYPE));
     }
