@@ -44,8 +44,30 @@ public class Base64HttpServiceTest {
 
     @Test
     void testBase64(){
-        String response = client.toBlocking().retrieve(HttpRequest.POST("/convertToBase64","test".getBytes(StandardCharsets.UTF_8)).contentType(MediaType.APPLICATION_OCTET_STREAM_TYPE));
+        String response = post("test");
         assertEquals("dGVzdA==", response);
+    }
+
+    @Test
+    void testBase64Null(){
+        String response = post("null");
+        assertEquals("bnVsbA==", response);
+    }
+
+    @Test
+    void testBase64SpecialCharacter(){
+        String response = post("!@#$%^&*()`~");
+        assertEquals("IUAjJCVeJiooKWB+", response);
+    }
+
+    @Test
+    void testBase64Script(){
+        String response = post("<script>alert(123)</script>");
+        assertEquals("PHNjcmlwdD5hbGVydCgxMjMpPC9zY3JpcHQ+", response);
+    }
+
+    private String post(String content) {
+        return client.toBlocking().retrieve(HttpRequest.POST("/convertToBase64",content.getBytes(StandardCharsets.UTF_8)).contentType(MediaType.APPLICATION_OCTET_STREAM_TYPE));
     }
 
 }
